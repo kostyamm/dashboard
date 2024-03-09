@@ -1,4 +1,4 @@
-export const fetchApi = (path: string, options?: Omit<RequestInit, 'body'> & { body: any }) => {
+export const fetchApi = (path: string, options?: Omit<RequestInit, 'body'> & { body?: any }) => {
     const url = `${import.meta.env.VITE_API_URL}${path}`;
 
     const fetchOptions = {

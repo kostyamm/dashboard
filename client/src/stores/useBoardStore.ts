@@ -9,54 +9,51 @@ export const useBoardStore = defineStore('board-store', {
         updateState(data) {
             if (!data.length) return;
 
-            this.boards = groupBoard(data)
+            this.boards = groupBoard(data);
         },
         async clearBoard() {
-            await fetchApi('/board/clear_board');
+            await fetchApi('/board/clear');
 
             this.boards = null;
         },
         async initMockBoard() {
-            const { data } = await fetchApi('/board/init_mock_board');
+            const { data } = await fetchApi('/board/init_mock');
 
-            this.updateState(data)
+            this.updateState(data);
         },
         async fetchBoard() {
             const { data } = await fetchApi('/board');
 
-            this.updateState(data)
+            this.updateState(data);
         },
         async createTask(body: Partial<Task>) {
-            const { data } = await fetchApi('/board/create_task',{
+            const { data } = await fetchApi('/board/task', {
                 method: 'POST',
-                body
+                body,
             });
 
-            this.updateState(data)
+            this.updateState(data);
         },
-        async updateTask(body: Partial<Task>) {
-            const { data } = await fetchApi('/board/update_task',{
-                method: 'POST',
-                body
+        async updateTask(task: Partial<Task>) {
+            const { data } = await fetchApi(`/board/task/${task.id}`, {
+                method: 'PUT',
+                body: task,
             });
 
-            this.updateState(data)
+            this.updateState(data);
         },
-        async deleteTask(id: string | number) {
-            const { data } = await fetchApi('/board/delete_task',{
-                method: 'POST',
-                body: { id }
-            });
+        async deleteTask(id: string) {
+            const { data } = await fetchApi(`/board/task/${id}`, { method: 'DELETE' });
 
-            this.updateState(data)
+            this.updateState(data);
         },
-        async changePosition(options: Pick<Task, 'id' | 'position' | 'status'>) {
-            const { data } = await fetchApi('/board/change_position',{
+        async changeTaskPosition(options: Pick<Task, 'id' | 'position' | 'status'>) {
+            const { data } = await fetchApi(`/board/task/${options.id}/change_position`, {
                 method: 'POST',
-                body: options
+                body: options,
             });
 
-            this.updateState(data)
+            this.updateState(data);
         },
     },
     getters: {},

@@ -24,7 +24,7 @@ const onChangeColumn = (data: any) => {
 const onChangePosition = (data: { element: any, newIndex: number, oldIndex: number }) => {
     const { element, newIndex } = data;
 
-    boardStore.changePosition({
+    boardStore.changeTaskPosition({
         id: element.id,
         status: element.status,
         position: newIndex,
@@ -86,9 +86,37 @@ const dragOptions = ref({
 }
 
 .dashboard-column {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
     padding: 24px 12px;
-    background-color: var(--dark-color--lighter);
+    min-height: 90px;
+
     border-radius: var(--border-radius);
+    background-color: var(--dark-color--lighter);
+
+    &:has(.dashboard-column__item--ghost):before {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        content: '+';
+        font-weight: 400;
+        font-size: 54px;
+        z-index: 10;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin: 12px 6px;
+        background-color: rgba(65, 184, 131, 0.6);
+        border-radius: var(--border-radius);
+    }
 
     &__item--drag {
         opacity: 0.4;
@@ -96,9 +124,10 @@ const dragOptions = ref({
     }
 
     &__item--ghost {
-        background-color: var(--dark-color--lighter);
-        outline: 1px dashed var(--grey-color);
-        border-radius: var(--border-radius);
+        display: none;
+        //background-color: var(--dark-color--lighter);
+        //outline: 1px dashed var(--grey-color);
+        //border-radius: var(--border-radius);
     }
 }
 </style>

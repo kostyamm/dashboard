@@ -94,12 +94,8 @@ const boardStore = useBoardStore();
         color: var(--warning--color);
     }
 
-    &:not(:last-child) {
-        margin-bottom: 16px;
-    }
-
     &:hover {
-        border-color: var(--white-color);
+        opacity: 0.8;
     }
 }
 </style>

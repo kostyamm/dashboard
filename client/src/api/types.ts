@@ -12,7 +12,7 @@ export enum TaskStatus {
 }
 
 export type Task = {
-    id: string | number;
+    id: string;
     status: TaskStatus;
     title: string;
     description: string;
