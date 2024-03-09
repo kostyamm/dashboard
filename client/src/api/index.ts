@@ -1,16 +1,34 @@
-export const fetchApi = <T>(path: string, options) => {
-    const url = `${import.meta.env.VITE_API_URL}${path}`
+export const fetchApi = (path: string, options?: Omit<RequestInit, 'body'> & { body: any }) => {
+    const url = `${import.meta.env.VITE_API_URL}${path}`;
 
-    return fetch(url, options)
+    const fetchOptions = {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        ...getNormalizedOptions(options),
+    };
+
+    return fetch(url, fetchOptions)
         .then(response => {
             if (!response.ok) {
-                throw new Error(response.statusText)
+                throw new Error(response.statusText);
             }
 
-            return response.json<{ data: T }>()
+            return response.json();
         })
         .catch((error) => {
             console.error(error);
-            throw new Error(error)
-        })
+            throw new Error(error);
+        });
+};
+
+const getNormalizedOptions = (options) => {
+    if (!options) {
+        return {}
+    }
+
+    const body = options.body ? JSON.stringify(options.body) : undefined
+
+    return { ...options, body }
 }

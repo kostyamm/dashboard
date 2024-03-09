@@ -7,8 +7,8 @@ const getMockArray = () => Array.from(MOCK_BOARD.values())
 const resetMockBoard = () => {
     MOCK_BOARD.clear()
 
-    mockData.forEach((deck) => {
-        MOCK_BOARD.set(deck.id, deck)
+    mockData.forEach((task) => {
+        MOCK_BOARD.set(task.id, task)
     })
 }
 

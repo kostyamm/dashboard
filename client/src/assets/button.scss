@@ -24,6 +24,11 @@ button {
 }
 
 button {
+    &:disabled {
+        background-color: var(--grey-color);
+        opacity: 0.8;
+    }
+
     &:has(.icon) {
         gap: 4px;
         padding: 8px;

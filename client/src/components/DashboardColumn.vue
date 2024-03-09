@@ -7,7 +7,6 @@ import DashboardColumnItem from './DashboardColumnItem.vue';
 const props = defineProps({
     list: {
         type: Array<Task>,
-        required: true
     },
     status: {
         type: String,
@@ -65,7 +64,6 @@ const dragOptions = ref({
         <h1>{{ statusMap[props.status] }}</h1>
 
         <Draggable
-            v-if="list"
             :list="list"
             @change="onChange"
             item-key="id"
@@ -76,7 +74,6 @@ const dragOptions = ref({
                 <DashboardColumnItem :item="element" />
             </template>
         </Draggable>
-        <h3 class="dashboard-column" v-else>Empty column</h3>
     </div>
 </template>
 
