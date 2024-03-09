@@ -1,0 +1,37 @@
+@import "button.scss";
+@import "link.scss";
+@import "common.scss";
+@import "input.scss";
+
+:root {
+  --dark-color: #1A1A1A;
+  --dark-color--lighter: #242424;
+  --grey-color: #474747;
+  --white-color: #efefef;
+  --primary-color: #41B883;
+  --warning--color: #FF6E6E;
+
+  --border-radius: 8px;
+
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.4;
+  font-weight: 400;
+
+  color: var(--white-color);
+  background-color: var(--dark-color);
+}
+
+body {
+  position: relative;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  min-width: 320px;
+  min-height: 100dvh;
+}
+
+#app {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 16px;
+}

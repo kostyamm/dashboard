@@ -1,0 +1,44 @@
+button {
+    display: flex;
+    align-items: center;
+    border-radius: var(--border-radius);
+    border: 2px solid transparent;
+    padding: 8px 12px;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    cursor: pointer;
+    opacity: 1;
+    transition: all ease-in-out 0.25s;
+
+    &.warning {
+        background-color: var(--warning--color);
+    }
+
+    &.outline {
+        background-color: transparent;
+        border-color: var(--primary-color);
+    }
+}
+
+button {
+    &:has(.icon) {
+        gap: 4px;
+        padding: 8px;
+
+        .icon {
+            padding: 0;
+        }
+    }
+
+    &:hover {
+        opacity: 0.8;
+    }
+
+    &:focus,
+    &:focus-visible {
+        outline: none;
+    }
+}
