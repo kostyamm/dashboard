@@ -42,6 +42,22 @@ export const useBoardStore = defineStore('board-store', {
 
             this.updateState(data)
         },
+        async deleteTask(id: string | number) {
+            const { data } = await fetchApi('/board/delete_task',{
+                method: 'POST',
+                body: { id }
+            });
+
+            this.updateState(data)
+        },
+        async changePosition(options: Pick<Task, 'id' | 'position' | 'status'>) {
+            const { data } = await fetchApi('/board/change_position',{
+                method: 'POST',
+                body: options
+            });
+
+            this.updateState(data)
+        },
     },
     getters: {},
 });

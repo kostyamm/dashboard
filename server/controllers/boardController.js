@@ -43,10 +43,24 @@ const updateTask = (req, res) => {
     res.json({ data: getMockArray() })
 }
 
+const deleteTask = (req, res) => {
+    MOCK_BOARD.delete(req.body.id)
+
+    res.json({ data: getMockArray() })
+}
+
+const changePosition = (req, res) => {
+    const updatedTask = req.body
+
+    res.json({ data: getMockArray() })
+}
+
 module.exports = {
     clearBoard,
     initMockBoard,
     getBoard,
     createTask,
-    updateTask
+    updateTask,
+    changePosition,
+    deleteTask
 }

@@ -3,20 +3,15 @@ import Draggable from 'vuedraggable';
 import { ref } from 'vue';
 import { Task, TaskStatus } from '../api/types.ts';
 import DashboardColumnItem from './DashboardColumnItem.vue';
+import { useBoardStore } from '../stores/useBoardStore.ts';
 
 const props = defineProps({
-    list: {
-        type: Array<Task>,
-    },
-    status: {
-        type: String,
-        required: true,
-    },
-    group: {
-        type: String,
-        default: 'dashboard',
-    },
+    list: { type: Array<Task> },
+    status: { type: String, required: true },
+    group: { type: String, default: 'dashboard' },
 });
+
+const boardStore = useBoardStore();
 
 const onRemoveItem = (data: any) => {
     console.log(`removed from ${props.status}`, data);
@@ -27,7 +22,13 @@ const onChangeColumn = (data: any) => {
 };
 
 const onChangePosition = (data: { element: any, newIndex: number, oldIndex: number }) => {
-    console.log(`moved in ${props.status}`, data);
+    const { element, newIndex } = data;
+
+    boardStore.changePosition({
+        id: element.id,
+        status: element.status,
+        position: newIndex,
+    });
 };
 
 const onChange = (event: any) => {

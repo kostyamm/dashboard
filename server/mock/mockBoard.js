@@ -2,7 +2,7 @@ const { mockData } = require('./mockData')
 
 const MOCK_BOARD = new Map()
 
-const getMockArray = () => Array.from(MOCK_BOARD.values())
+const getMockArray = () => Array.from(MOCK_BOARD.values()).reverse()
 
 const resetMockBoard = () => {
     MOCK_BOARD.clear()
