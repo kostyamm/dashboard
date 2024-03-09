@@ -2,15 +2,15 @@ import { defineStore } from 'pinia';
 import { shallowRef } from 'vue';
 
 import TaskModalContent from '../components/UI/Modals/TaskModalContent.vue';
-import { IModalProps, IModalState } from './useModalStore.types.ts';
+import { ModalProps, ModalState } from './useModalStore.types.ts';
 import { Task } from '../api/types.ts';
 
 const basicState = { component: null, props: {} };
 
 export const useModalStore = defineStore('modal-store', {
-    state: (): IModalState => ({ modalState: basicState }),
+    state: (): ModalState => ({ modalState: basicState }),
     actions: {
-        openModal({ component, props = {} }: IModalProps) {
+        openModal({ component, props = {} }: ModalProps) {
             const body = document.body;
             if (body) body.style.overflow = 'hidden';
 

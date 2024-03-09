@@ -4,8 +4,11 @@ import { ref } from 'vue';
 import { Task, TaskStatus } from '../api/types.ts';
 import DashboardColumnItem from './DashboardColumnItem.vue';
 
-const modelValue = defineModel<Array<Task>>('modelValue');
 const props = defineProps({
+    list: {
+        type: Array<Task>,
+        required: true
+    },
     status: {
         type: String,
         required: true,
@@ -15,9 +18,6 @@ const props = defineProps({
         default: 'dashboard',
     },
 });
-
-// const emit = defineEmits(['update:modelValue']);
-// const updateModel = (data: any) => emit('update:modelValue', data);
 
 const onRemoveItem = (data: any) => {
     console.log(`removed from ${props.status}`, data);
@@ -63,9 +63,11 @@ const dragOptions = ref({
 <template>
     <div class="dashboard-container">
         <h1>{{ statusMap[props.status] }}</h1>
+
         <Draggable
+            v-if="list"
+            :list="list"
             @change="onChange"
-            :list="modelValue"
             item-key="id"
             class="dashboard-column"
             v-bind="dragOptions"
@@ -74,6 +76,7 @@ const dragOptions = ref({
                 <DashboardColumnItem :item="element" />
             </template>
         </Draggable>
+        <h3 class="dashboard-column" v-else>Empty column</h3>
     </div>
 </template>
 

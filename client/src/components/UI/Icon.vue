@@ -10,8 +10,10 @@ import GripVertical from 'lucide-vue-next/dist/esm/icons/grip-vertical.js'
 import X from 'lucide-vue-next/dist/esm/icons/x.js'
 import Trash2 from 'lucide-vue-next/dist/esm/icons/trash-2.js'
 import Plus from 'lucide-vue-next/dist/esm/icons/plus.js'
+import ListRestart from 'lucide-vue-next/dist/esm/icons/list-restart.js'
+import ListX from 'lucide-vue-next/dist/esm/icons/list-x.js'
 
-const icons = { Pencil, GripVertical, X, Trash2, Plus }
+const icons = { Pencil, GripVertical, X, Trash2, Plus, ListRestart, ListX }
 
 const props = defineProps({
     name: {
@@ -25,7 +27,7 @@ const props = defineProps({
     color: String,
     strokeWidth: {
         type: Number,
-        default: 2
+        default: 1.6
     },
     defaultClass: String
 })
