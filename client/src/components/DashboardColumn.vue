@@ -1,23 +1,20 @@
 <script setup lang="ts">
 import Draggable from 'vuedraggable';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { Task, TaskStatus } from '../api/types.ts';
 import DashboardColumnItem from './DashboardColumnItem.vue';
 import { useBoardStore } from '../stores/useBoardStore.ts';
 
-type DashboardColumnProps = { list: Array<Task>; status: Task['status']; group?: string }
+const props = defineProps<{ list: Array<Task>; status: Task['status']; group?: string }>();
+const sortedList = computed(() => props.list.sort((a, b) => {
+    const difference = new Date(a.updatedAt).valueOf() - new Date(b.updatedAt).valueOf();
 
-const props = defineProps<DashboardColumnProps>();
+    return difference < 0 ? 1 : -1;
+}));
+
+const listRef = ref(sortedList);
 
 const boardStore = useBoardStore();
-
-const onRemoveItem = (data: any) => {
-    console.log(`removed from ${props.status}`, data);
-};
-
-const onChangePosition = (data: any) => {
-    console.log(`moved to ${props.status}`, data);
-};
 
 const onChangeStatus = (data: { element: any, newIndex: number, oldIndex: number }) => {
     const { element } = data;
@@ -29,17 +26,17 @@ const onChangeStatus = (data: { element: any, newIndex: number, oldIndex: number
 };
 
 const onChange = (event: any) => {
-    if (event.hasOwnProperty('removed')) {
-        onRemoveItem(event.removed);
-    }
-
     if (event.hasOwnProperty('added')) {
         onChangeStatus(event.added);
     }
 
-    if (event.hasOwnProperty('moved')) {
-        onChangePosition(event.moved);
-    }
+    // if (event.hasOwnProperty('removed')) {
+    //     console.log(`removed from ${props.status}`, event.removed);
+    // }
+    //
+    // if (event.hasOwnProperty('moved')) {
+    //     console.log(`moved to ${props.status}`, event.moved);
+    // }
 };
 
 const statusMap = {
@@ -48,13 +45,6 @@ const statusMap = {
     [TaskStatus.Done]: 'Done',
     [TaskStatus.Cancelled]: 'Cancelled',
 };
-
-const dragOptions = ref({
-    animation: 100,
-    group: props.group || 'dashboard',
-    ghostClass: 'dashboard-column__item--ghost',
-    dragClass: 'dashboard-column__item--drag',
-});
 </script>
 
 <template>
@@ -62,11 +52,14 @@ const dragOptions = ref({
         <h1>{{ statusMap[props.status] }}</h1>
 
         <Draggable
-            :list="list"
+            :list="listRef"
+            :group="props.group || 'dashboard'"
             @change="onChange"
             item-key="id"
+            animation="100"
             class="dashboard-column"
-            v-bind="dragOptions"
+            ghostClass="dashboard-column__item--ghost"
+            dragClass="dashboard-column__item--drag"
         >
             <template #item="{element}" class="dashboard-column">
                 <DashboardColumnItem :item="element" />
