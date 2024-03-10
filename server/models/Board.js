@@ -1,0 +1,14 @@
+const { Schema, model, Types } = require('mongoose')
+
+const boardSchema = new Schema({
+    owner: { type: Types.ObjectId, ref: 'user', required: true },
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    status: { type: String, required: true },
+    priority: { type: String, required: true },
+    due_date: { type: String, required: true }
+}, { timestamps: true })
+
+const Board = model('board', boardSchema)
+
+module.exports = Board
