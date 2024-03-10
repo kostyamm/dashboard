@@ -1,23 +1,27 @@
-const { MOCK_BOARD, getMockArray, resetMockBoard } = require('../mock/mockBoard')
+const Board = require('../models/Board')
+const { TaskStatus } = require('../helpers/constants')
 
-const clearBoard = (req, res) => {
-    MOCK_BOARD.clear()
+const getBoard = async ({ user }, res) => {
+    const board = await Board.where('owner').equals(user.id)
 
-    res.json({ data: [] })
-}
-
-const initMockBoard = (req, res) => {
-    resetMockBoard()
-
-    res.json({ data: getMockArray() })
-}
-
-const getBoard = (req, res) => {
-    res.json({ data: getMockArray() })
+    res.json(groupBoard(board))
 }
 
 module.exports = {
-    clearBoard,
-    initMockBoard,
     getBoard,
 }
+
+const groupBoard = (data) => {
+    return data.reduce((res, currentValue) => {
+        const tasksByStatus = res[currentValue.status];
+        res[currentValue.status] = [...tasksByStatus, currentValue];
+
+        return res;
+
+    }, {
+        [TaskStatus.ToDo]: [],
+        [TaskStatus.InProgress]: [],
+        [TaskStatus.Done]: [],
+        [TaskStatus.Cancelled]: [],
+    });
+};

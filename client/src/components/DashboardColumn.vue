@@ -5,11 +5,9 @@ import { Task, TaskStatus } from '../api/types.ts';
 import DashboardColumnItem from './DashboardColumnItem.vue';
 import { useBoardStore } from '../stores/useBoardStore.ts';
 
-const props = defineProps({
-    list: { type: Array<Task> },
-    status: { type: String, required: true },
-    group: { type: String, default: 'dashboard' },
-});
+type DashboardColumnProps = { list: Array<Task>; status: Task['status']; group?: string }
+
+const props = defineProps<DashboardColumnProps>();
 
 const boardStore = useBoardStore();
 
@@ -17,17 +15,16 @@ const onRemoveItem = (data: any) => {
     console.log(`removed from ${props.status}`, data);
 };
 
-const onChangeColumn = (data: any) => {
-    console.log(`added to ${props.status}`, data);
+const onChangePosition = (data: any) => {
+    console.log(`moved to ${props.status}`, data);
 };
 
-const onChangePosition = (data: { element: any, newIndex: number, oldIndex: number }) => {
-    const { element, newIndex } = data;
+const onChangeStatus = (data: { element: any, newIndex: number, oldIndex: number }) => {
+    const { element } = data;
 
-    boardStore.changeTaskPosition({
+    boardStore.updateTask({
         id: element.id,
-        status: element.status,
-        position: newIndex,
+        status: props.status,
     });
 };
 
@@ -37,7 +34,7 @@ const onChange = (event: any) => {
     }
 
     if (event.hasOwnProperty('added')) {
-        onChangeColumn(event.added);
+        onChangeStatus(event.added);
     }
 
     if (event.hasOwnProperty('moved')) {
@@ -54,7 +51,7 @@ const statusMap = {
 
 const dragOptions = ref({
     animation: 100,
-    group: props.group,
+    group: props.group || 'dashboard',
     ghostClass: 'dashboard-column__item--ghost',
     dragClass: 'dashboard-column__item--drag',
 });

@@ -1,8 +1,9 @@
 const { Schema, model } = require('mongoose')
+const { baseOptions } = require('./options')
 
 const userSchema = new Schema({
     name: { type: String, required: true, unique: true },
-}, { timestamps: true })
+}, baseOptions)
 
 const User = model('user', userSchema)
 

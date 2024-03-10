@@ -10,6 +10,8 @@ const authStore = useAuthStore()
 
 onMounted(() => {
     if (authStore.isAuth) {
+        authStore.verify()
+
         return
     }
 
@@ -18,6 +20,6 @@ onMounted(() => {
 </script>
 
 <template>
-    <Dashboard />
+    <Dashboard v-if="authStore.isAuth" />
     <Modal />
 </template>

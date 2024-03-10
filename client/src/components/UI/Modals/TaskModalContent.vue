@@ -8,7 +8,7 @@ const modalStore = useModalStore();
 const boardStore = useBoardStore();
 const isDisabled = ref(false);
 
-const props = defineProps(['id', 'status', 'position', 'title', 'description', 'priority', 'due_date']);
+const props = defineProps(['id', 'status', 'title', 'description', 'priority', 'due_date']);
 const form = reactive(toRaw(props));
 
 const performSetForm = async () => {
@@ -19,6 +19,7 @@ const performSetForm = async () => {
 
     await boardStore.createTask(toRaw(form));
 };
+
 const onSubmit = async () => {
     isDisabled.value = true;
 

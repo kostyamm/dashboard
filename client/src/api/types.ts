@@ -18,5 +18,4 @@ export type Task = {
     description: string;
     priority: Priority;
     due_date: string;
-    position: number;
 }

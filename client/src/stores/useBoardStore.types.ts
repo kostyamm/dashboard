@@ -8,5 +8,5 @@ export type Board = {
 }
 
 export type BoardState = {
-    boards: Board | null;
+    boards: Board;
 }

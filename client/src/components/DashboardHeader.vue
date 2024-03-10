@@ -2,10 +2,10 @@
 import Icon from './UI/Icon.vue';
 
 import { useModalStore } from '../stores/useModalStore.ts';
-import { useBoardStore } from '../stores/useBoardStore.ts';
+import { useAuthStore } from '../stores/useAuthStore.ts';
 
 const modalStore = useModalStore();
-const boardStore = useBoardStore()
+const authStore = useAuthStore();
 </script>
 
 <template>
@@ -15,14 +15,14 @@ const boardStore = useBoardStore()
             Add task
         </button>
 
-        <div class="header__actions">
-            <button @click="boardStore.initMockBoard" class="outline">
-                <Icon name="ListRestart" />
-                Init Board
-            </button>
-            <button @click="boardStore.clearBoard" class="outline">
-                <Icon name="ListX" />
-                Clear Board
+        <div v-if="authStore.isAuth" class="header__menu">
+            <div class="header__menu__user">
+                <Icon name="CircleUserRound" />
+                {{ authStore.userName }}
+            </div>
+            <button @click="authStore.logout" class="outline">
+                <Icon name="LogOut" />
+                Log out
             </button>
         </div>
     </div>
@@ -35,10 +35,19 @@ const boardStore = useBoardStore()
     justify-content: space-between;
     margin-bottom: 24px;
 
-    &__actions {
+    &__menu {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 24px;
+
+        &__user {
+            display: flex;
+            align-items: center;
+
+            .icon {
+                padding-right: 8px;
+            }
+        }
     }
 }
 </style>

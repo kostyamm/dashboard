@@ -1,3 +1,5 @@
+import { getToken } from '../stores/useAuthStore.ts';
+
 export const fetchApi = (path: string, options?: Omit<RequestInit, 'body'> & { body?: any }) => {
     const url = `${import.meta.env.VITE_API_URL}${path}`;
 
@@ -5,6 +7,7 @@ export const fetchApi = (path: string, options?: Omit<RequestInit, 'body'> & { b
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'authorization': getToken(),
         },
         ...getNormalizedOptions(options),
     };
@@ -18,7 +21,7 @@ export const fetchApi = (path: string, options?: Omit<RequestInit, 'body'> & { b
             return response.json();
         })
         .catch((error) => {
-            console.error(error);
+            console.error('Fetch', error);
             throw new Error(error);
         });
 };

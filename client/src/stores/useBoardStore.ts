@@ -1,75 +1,55 @@
 import { defineStore } from 'pinia';
-import { Board, BoardState } from './useBoardStore.types.ts';
+import { BoardState } from './useBoardStore.types.ts';
 import { fetchApi } from '../api';
 import { Task } from '../api/types.ts';
 
 export const useBoardStore = defineStore('board-store', {
-    state: (): BoardState => ({ boards: null }),
+    state: (): BoardState => ({
+        boards: {
+            to_do: [],
+            in_progress: [],
+            done: [],
+            cancelled: [],
+        },
+    }),
     actions: {
-        updateState(data) {
-            if (!data.length) return;
-
-            this.boards = groupBoard(data);
-        },
-        async clearBoard() {
-            await fetchApi('/board/clear');
-
-            this.boards = null;
-        },
-        async initMockBoard() {
-            const { data } = await fetchApi('/board/init_mock');
-
-            this.updateState(data);
-        },
         async fetchBoard() {
-            const { data } = await fetchApi('/board');
-
-            this.updateState(data);
+            this.boards = await fetchApi('/board');
         },
         async createTask(body: Partial<Task>) {
-            const { data } = await fetchApi('/board/task', {
+            const data = await fetchApi('/board/task', {
                 method: 'POST',
                 body,
             });
 
-            this.updateState(data);
+            this.boards[data.status].unshift(data);
         },
         async updateTask(task: Partial<Task>) {
-            const { data } = await fetchApi(`/board/task/${task.id}`, {
+            const data = await fetchApi(`/board/task/${task.id}`, {
                 method: 'PUT',
                 body: task,
             });
 
-            this.updateState(data);
+            this.boards[data.status] = this.boards[data.status]
+                .map((task) => {
+                    if (task.id === data.id) return data;
+
+                    return task;
+                });
         },
         async deleteTask(id: string) {
-            const { data } = await fetchApi(`/board/task/${id}`, { method: 'DELETE' });
+            const data = await fetchApi(`/board/task/${id}`, { method: 'DELETE' });
 
-            this.updateState(data);
-        },
-        async changeTaskPosition(options: Pick<Task, 'id' | 'position' | 'status'>) {
-            const { data } = await fetchApi(`/board/task/${options.id}/change_position`, {
-                method: 'POST',
-                body: options,
-            });
-
-            this.updateState(data);
+            this.boards[data.status] = this.boards[data.status]
+                .filter((task) => task.id !== data.id);
         },
     },
-    getters: {},
+    getters: {
+        isEmptyState({ boards }) {
+            return !boards.to_do.length
+                && !boards.in_progress.length
+                && !boards.done.length
+                && !boards.cancelled.length
+        },
+    },
 });
-
-const groupBoard = (data: Array<Task>) => {
-    return data.reduce((res, currentValue: Task) => {
-        const tasksByStatus: Array<Task> = res[currentValue.status];
-        res[currentValue.status] = [...tasksByStatus, currentValue];
-
-        return res;
-
-    }, {
-        to_do: [],
-        in_progress: [],
-        done: [],
-        cancelled: [],
-    } as Board);
-};

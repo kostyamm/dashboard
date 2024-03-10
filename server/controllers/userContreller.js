@@ -26,7 +26,7 @@ const verify = (req, res) => {
     const { id, name } = req.user
     const token = generateJwt(id, name)
 
-    res.json({ token })
+    res.json({ token, name })
 }
 
 module.exports = { login, verify }

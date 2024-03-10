@@ -10,10 +10,10 @@ import GripVertical from 'lucide-vue-next/dist/esm/icons/grip-vertical.js'
 import X from 'lucide-vue-next/dist/esm/icons/x.js'
 import Trash2 from 'lucide-vue-next/dist/esm/icons/trash-2.js'
 import Plus from 'lucide-vue-next/dist/esm/icons/plus.js'
-import ListRestart from 'lucide-vue-next/dist/esm/icons/list-restart.js'
-import ListX from 'lucide-vue-next/dist/esm/icons/list-x.js'
+import LogOut from 'lucide-vue-next/dist/esm/icons/log-out.js'
+import CircleUserRound from 'lucide-vue-next/dist/esm/icons/circle-user-round.js'
 
-const icons = { Pencil, GripVertical, X, Trash2, Plus, ListRestart, ListX }
+const icons = { Pencil, GripVertical, X, Trash2, Plus, LogOut, CircleUserRound }
 
 const props = defineProps({
     name: {

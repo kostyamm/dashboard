@@ -6,9 +6,10 @@ import { onMounted } from 'vue';
 import DashboardColumn from './DashboardColumn.vue';
 import DashboardHeader from './DashboardHeader.vue';
 import DashboardLoader from './DashboardLoader.vue';
+import { TaskStatus } from '../api/types.ts';
 
 const boardStore = useBoardStore();
-const { boards } = storeToRefs(boardStore);
+const { boards, isEmptyState } = storeToRefs(boardStore);
 
 onMounted(() => boardStore.fetchBoard());
 </script>
@@ -18,11 +19,11 @@ onMounted(() => boardStore.fetchBoard());
         <DashboardHeader />
 
         <Transition name="fade" mode="out-in">
-            <div v-if="boards" class="dashboard">
-                <DashboardColumn :list="boards.to_do" status="to_do" />
-                <DashboardColumn :list="boards.in_progress" status="in_progress" />
-                <DashboardColumn :list="boards.done" status="done" />
-                <DashboardColumn :list="boards.cancelled" status="cancelled" />
+            <div v-if="!isEmptyState" class="dashboard">
+                <DashboardColumn :list="boards.to_do" :status="TaskStatus.ToDo" />
+                <DashboardColumn :list="boards.in_progress" :status="TaskStatus.InProgress" />
+                <DashboardColumn :list="boards.done" :status="TaskStatus.Done" />
+                <DashboardColumn :list="boards.cancelled" :status="TaskStatus.Cancelled" />
             </div>
             <DashboardLoader v-else />
         </Transition>
