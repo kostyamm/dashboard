@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { useModalStore } from '../../../stores/useModalStore';
-import { reactive, ref, toRaw } from 'vue';
+import { reactive, toRaw } from 'vue';
 import { Priority } from '../../../api/types.ts';
 import { useBoardStore } from '../../../stores/useBoardStore.ts';
 
 const modalStore = useModalStore();
 const boardStore = useBoardStore();
-const isDisabled = ref(false);
 
 const props = defineProps(['id', 'status', 'title', 'description', 'priority', 'due_date']);
 const form = reactive(toRaw(props));
@@ -21,12 +20,9 @@ const performSetForm = async () => {
 };
 
 const onSubmit = async () => {
-    isDisabled.value = true;
-
     await performSetForm();
 
     modalStore.closeModal();
-    isDisabled.value = false;
 };
 </script>
 
@@ -50,7 +46,7 @@ const onSubmit = async () => {
         <input v-model="form.due_date" type="date" id="due_date" />
 
         <div class="form__footer">
-            <button :disabled="isDisabled" @click="onSubmit">Submit</button>
+            <button @click="onSubmit">Submit</button>
             <button class="outline" @click="modalStore.closeModal">Close</button>
         </div>
     </div>
