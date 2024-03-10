@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import DashboardColumn from './DashboardColumn.vue';
-import DashboardHeader from './DashboardHeader.vue';
-import DashboardLoader from './DashboardLoader.vue';
 import { useBoardStore } from '../stores/useBoardStore.ts';
 import { storeToRefs } from 'pinia';
 import { onMounted } from 'vue';
+
+import DashboardColumn from './DashboardColumn.vue';
+import DashboardHeader from './DashboardHeader.vue';
+import DashboardLoader from './DashboardLoader.vue';
 
 const boardStore = useBoardStore();
 const { boards } = storeToRefs(boardStore);

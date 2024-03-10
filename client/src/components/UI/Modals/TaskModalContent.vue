@@ -57,25 +57,12 @@ const onSubmit = async () => {
 
 <style lang="scss" scoped>
 .form {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    gap: 16px;
-
     & textarea {
         resize: none;
     }
 
     & select {
         text-transform: capitalize;
-    }
-
-    &__footer {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        gap: 16px;
-        margin-top: 16px;
     }
 }
 </style>

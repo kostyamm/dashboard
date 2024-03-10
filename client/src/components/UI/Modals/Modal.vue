@@ -13,6 +13,14 @@ const keydownListener = (event: KeyboardEvent) => {
     }
 };
 
+const onCloseModal = () => {
+    if (modalState.value.options.blockClose) {
+        return
+    }
+
+    modalStore.closeModal()
+}
+
 onMounted(() => document.addEventListener('keydown', keydownListener));
 onUnmounted(() => document.removeEventListener('keydown', keydownListener));
 </script>
@@ -21,7 +29,7 @@ onUnmounted(() => document.removeEventListener('keydown', keydownListener));
     <Transition name="modal-fade">
         <div
             v-if="modalState?.component"
-            @click.self="modalStore.closeModal"
+            @click.self="onCloseModal"
             aria-modal="true"
             role="dialog"
             tabindex="-1"
@@ -29,15 +37,15 @@ onUnmounted(() => document.removeEventListener('keydown', keydownListener));
         >
             <div class="modal-inner">
                 <div class="modal-inner__header">
-                    <div>Task</div>
-                    <button @click="modalStore.closeModal" class="outline">
+                    <div>{{ modalState.options.title }}</div>
+                    <button v-if="!modalState.options.blockClose" @click="onCloseModal" class="outline">
                         <Icon name="X" />
                     </button>
                 </div>
                 <div class="modal-inner__content">
                     <component
                         :is="modalState?.component"
-                        v-bind="modalState?.props"
+                        v-bind="modalState.options?.contentProps"
                     />
                 </div>
             </div>

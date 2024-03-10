@@ -5,7 +5,11 @@ type VueComponent = InstanceType<typeof component>;
 
 export type ModalProps = {
     component: null | VueComponent;
-    props?: object;
+    options: {
+        title?: string;
+        blockClose?: boolean;
+        contentProps?: object;
+    }
 }
 
 export type ModalState = {

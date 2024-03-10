@@ -4,29 +4,43 @@ import { shallowRef } from 'vue';
 import TaskModalContent from '../components/UI/Modals/TaskModalContent.vue';
 import { ModalProps, ModalState } from './useModalStore.types.ts';
 import { Task } from '../api/types.ts';
+import AuthModalContent from '../components/UI/Modals/AuthModalContent.vue';
 
-const basicState = { component: null, props: {} };
+const basicState = { component: null, options: {} };
 
 export const useModalStore = defineStore('modal-store', {
     state: (): ModalState => ({ modalState: basicState }),
     actions: {
-        openModal({ component, props = {} }: ModalProps) {
+        openModal({ component, options }: ModalProps) {
             const body = document.body;
             if (body) body.style.overflow = 'hidden';
 
-            this.modalState = { component, props: props || {} };
+            this.modalState = { component, options };
         },
 
         closeModal() {
-            // Reset our state
             this.modalState = basicState;
 
             const body = document.body;
             if (body) body.style.overflow = 'auto';
         },
 
-        openTaskModal(props?: Task) {
-            this.openModal({ component: shallowRef(TaskModalContent), props });
+        openTaskModal(contentProps?: Task) {
+            const options: ModalProps['options'] = {
+                title: 'Task',
+                contentProps
+            }
+
+            this.openModal({ component: shallowRef(TaskModalContent), options});
+        },
+
+        openAuthModal() {
+            const options: ModalProps['options'] = {
+                title: 'Auth',
+                blockClose: true
+            }
+
+            this.openModal({ component: shallowRef(AuthModalContent), options });
         },
     },
     getters: {},

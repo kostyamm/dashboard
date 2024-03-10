@@ -25,6 +25,7 @@ button {
 
 button {
     &:disabled {
+        border-color: transparent;
         background-color: var(--grey-color);
         opacity: 0.8;
     }
