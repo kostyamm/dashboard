@@ -36,7 +36,7 @@ export const useModalStore = defineStore('modal-store', {
 
         openAuthModal() {
             const options: ModalProps['options'] = {
-                title: 'Auth',
+                title: 'Authorization',
                 blockClose: true
             }
 

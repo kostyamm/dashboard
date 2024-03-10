@@ -25,7 +25,7 @@ const onSubmit = async () => {
         <input v-model="form.name" id="name" />
 
         <div class="form__footer">
-            <button :disabled="isDisabled" @click="onSubmit">Submit</button>
+            <button :disabled="isDisabled" @click="onSubmit">Log in</button>
         </div>
     </div>
 </template>
