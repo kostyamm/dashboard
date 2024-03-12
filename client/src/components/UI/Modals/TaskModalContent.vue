@@ -12,15 +12,18 @@ const form = reactive(toRaw(props));
 
 const performSetForm = async () => {
     if (props.id) {
-        await boardStore.updateTask(toRaw(form));
-        return;
+        return await boardStore.updateTask(toRaw(form));
     }
 
-    await boardStore.createTask(toRaw(form));
+    return await boardStore.createTask(toRaw(form));
 };
 
 const onSubmit = async () => {
-    await performSetForm();
+    const data = await performSetForm();
+
+    if (data.error) {
+        return;
+    }
 
     modalStore.closeModal();
 };
@@ -28,22 +31,30 @@ const onSubmit = async () => {
 
 <template>
     <div class="form">
-        <label for="title">Title</label>
-        <input v-model="form.title" id="title" />
+        <div class="form__field">
+            <label for="title">Title</label>
+            <input v-model="form.title" id="title">
+        </div>
 
-        <label for="description">Description</label>
-        <textarea v-model="form.description" id="description" rows="4" />
+        <div class="form__field">
+            <label for="description">Description</label>
+            <textarea v-model="form.description" id="description" rows="4" />
+        </div>
 
-        <label for="priority">Priority</label>
-        <select v-model="form.priority" id="priority" name="priority">
-            <option disabled value="">Please select one</option>
-            <option>{{ Priority.Low }}</option>
-            <option>{{ Priority.Medium }}</option>
-            <option>{{ Priority.Hight }}</option>
-        </select>
+        <div class="form__field">
+            <label for="priority">Priority</label>
+            <select v-model="form.priority" id="priority" name="priority">
+                <option disabled value="">Please select one</option>
+                <option>{{ Priority.Low }}</option>
+                <option>{{ Priority.Medium }}</option>
+                <option>{{ Priority.Hight }}</option>
+            </select>
+        </div>
 
-        <label for="due_date">Due date</label>
-        <input v-model="form.due_date" type="date" id="due_date" />
+        <div class="form__field">
+            <label for="due_date">Due date</label>
+            <input v-model="form.due_date" type="date" id="due_date" />
+        </div>
 
         <div class="form__footer">
             <button @click="onSubmit">Submit</button>

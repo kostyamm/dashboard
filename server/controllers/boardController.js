@@ -1,10 +1,15 @@
 const Board = require('../models/Board')
 const { TaskStatus } = require('../helpers/constants')
+const apiError = require('../helpers/apiError')
 
-const getBoard = async ({ user }, res) => {
-    const board = await Board.where('owner').equals(user.id)
+const getBoard = async ({ user }, res, next) => {
+    try {
+        const board = await Board.where('owner').equals(user.id)
 
-    res.json(groupBoard(board))
+        res.json(groupBoard(board))
+    } catch {
+        return next(apiError.badRequest('Some problems getting the board'))
+    }
 }
 
 module.exports = {

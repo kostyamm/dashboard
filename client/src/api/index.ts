@@ -19,14 +19,14 @@ export const fetchApi = async (path: string, options?: Omit<RequestInit, 'body'>
         const result = await fetch(url, fetchOptions)
         const response = await result.json()
 
-        if (!result.ok) {
-            notificationStore.openNotification({
-                message: response.message,
-                title: result.statusText,
-                status: result.status
-            })
+        if (response.error) {
+            const { message, status } = response.error
 
-            throw new Error(response.statusText)
+            notificationStore.openNotification({
+                title: result.statusText,
+                status,
+                message,
+            })
         }
 
         return response

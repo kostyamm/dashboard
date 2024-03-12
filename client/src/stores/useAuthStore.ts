@@ -20,8 +20,12 @@ export const useAuthStore = defineStore('auth-store', {
                 body: loginForm,
             });
 
-            this.updateState(data);
-            setToken(data.token);
+            if (!data.error) {
+                this.updateState(data);
+                setToken(data.token);
+            }
+
+            return data
         },
         async verify() {
             const data = await fetchApi('/verify');

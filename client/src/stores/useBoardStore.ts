@@ -22,7 +22,11 @@ export const useBoardStore = defineStore('board-store', {
                 body,
             });
 
-            this.boards[data.status].unshift(data);
+            if (!data.error) {
+                this.boards[data.status].unshift(data);
+            }
+
+            return data
         },
         async updateTask(task: Partial<Task>) {
             const data = await fetchApi(`/board/task/${task.id}`, {
@@ -30,18 +34,26 @@ export const useBoardStore = defineStore('board-store', {
                 body: task,
             });
 
-            this.boards[data.status] = this.boards[data.status]
-                .map((task) => {
-                    if (task.id === data.id) return data;
+            if (!data.error) {
+                this.boards[data.status] = this.boards[data.status]
+                    .map((task) => {
+                        if (task.id === data.id) return data;
 
-                    return task;
-                });
+                        return task;
+                    });
+            }
+
+            return data
         },
         async deleteTask(id: string) {
             const data = await fetchApi(`/board/task/${id}`, { method: 'DELETE' });
 
-            this.boards[data.status] = this.boards[data.status]
-                .filter((task) => task.id !== data.id);
+            if (!data.error) {
+                this.boards[data.status] = this.boards[data.status]
+                    .filter((task) => task.id !== data.id);
+            }
+
+            return data
         },
     },
     getters: {

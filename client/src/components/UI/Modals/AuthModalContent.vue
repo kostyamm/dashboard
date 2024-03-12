@@ -9,7 +9,11 @@ const authStore = useAuthStore();
 const form = reactive({ name: null });
 
 const onSubmit = async () => {
-    await authStore.login(toRaw(form));
+    const data = await authStore.login(toRaw(form));
+
+    if (data.error) {
+        return;
+    }
 
     modalStore.closeModal();
 };
@@ -17,8 +21,10 @@ const onSubmit = async () => {
 
 <template>
     <div class="form">
-        <label for="name">Name</label>
-        <input v-model="form.name" id="name" />
+        <div class="form__field">
+            <label for="name">Name</label>
+            <input v-model="form.name" id="name" />
+        </div>
 
         <div class="form__footer">
             <button @click="onSubmit">Log in</button>
