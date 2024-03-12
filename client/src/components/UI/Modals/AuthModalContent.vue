@@ -9,7 +9,7 @@ const authStore = useAuthStore();
 const form = reactive({ name: null });
 
 const onSubmit = async () => {
-    await authStore.login(toRaw(form))
+    await authStore.login(toRaw(form));
 
     modalStore.closeModal();
 };

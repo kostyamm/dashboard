@@ -6,7 +6,7 @@ import { ModalProps, ModalState } from './useModalStore.types.ts';
 import { Task } from '../api/types.ts';
 import AuthModalContent from '../components/UI/Modals/AuthModalContent.vue';
 
-const basicState = { component: null, options: {} };
+const basicState: ModalProps = { component: null, options: {} };
 
 export const useModalStore = defineStore('modal-store', {
     state: (): ModalState => ({ modalState: basicState }),
@@ -19,10 +19,10 @@ export const useModalStore = defineStore('modal-store', {
         },
 
         closeModal() {
-            this.modalState = basicState;
-
             const body = document.body;
             if (body) body.style.overflow = 'auto';
+
+            this.modalState = basicState;
         },
 
         openTaskModal(contentProps?: Task) {
