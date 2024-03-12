@@ -20,10 +20,10 @@ export const fetchApi = async (path: string, options?: Omit<RequestInit, 'body'>
         const response = await result.json()
 
         if (response.error) {
-            const { message, status } = response.error
+            const { message, status, statusText } = response.error
 
             notificationStore.openNotification({
-                title: result.statusText,
+                title: statusText || 'Api Error',
                 status,
                 message,
             })
