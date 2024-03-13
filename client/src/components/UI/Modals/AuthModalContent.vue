@@ -1,33 +1,28 @@
 <script setup lang="ts">
-import { reactive, toRaw } from 'vue';
+import { ref, watch } from 'vue';
 import { useModalStore } from '../../../stores/useModalStore';
-import { useAuthStore } from '../../../stores/useAuthStore.ts';
+
+import AuthModalContentLogin from './AuthModalContentLogin.vue';
+import AuthModalContentRegistration from './AuthModalContentRegistration.vue';
 
 const modalStore = useModalStore();
-const authStore = useAuthStore();
+const isAuthForm = ref(true);
 
-const form = reactive({ name: null });
+const goToLoginForm = () => isAuthForm.value = true;
+const goToRegistrationForm = () => isAuthForm.value = false;
 
-const onSubmit = async () => {
-    const data = await authStore.login(toRaw(form));
-
-    if (data.error) {
-        return;
+watch(() => isAuthForm.value, (value) => {
+    if (value) {
+        return modalStore.updateModalTitle('Authorization');
     }
 
-    modalStore.closeModal();
-};
+    modalStore.updateModalTitle('Registration');
+});
 </script>
 
 <template>
-    <div class="form">
-        <div class="form__field">
-            <label for="name">Name</label>
-            <input v-model="form.name" id="name" />
-        </div>
-
-        <div class="form__footer">
-            <button @click="onSubmit">Log in</button>
-        </div>
-    </div>
+    <Transition name="form" mode="out-in">
+        <AuthModalContentLogin v-if="isAuthForm" :goToRegistrationForm="goToRegistrationForm" />
+        <AuthModalContentRegistration v-else :goToLoginForm="goToLoginForm" />
+    </Transition>
 </template>

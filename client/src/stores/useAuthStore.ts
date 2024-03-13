@@ -1,23 +1,42 @@
 import { defineStore } from 'pinia';
-import { AuthState } from './useAuthStore.types.ts';
+import { Auth, AuthState } from './useAuthStore.types.ts';
 import { fetchApi } from '../api';
 import { useModalStore } from './useModalStore.ts';
 import { useBoardStore } from './useBoardStore.ts';
 
+const basicState: Auth = {
+    id: null,
+    email: null,
+    token: null,
+    name: null,
+    surname: null,
+};
+
 export const useAuthStore = defineStore('auth-store', {
-    state: (): AuthState => ({ token: null, name: null }),
+    state: (): AuthState => ({ authState: basicState }),
     actions: {
-        updateState(data) {
+        updateState(data: Auth) {
             if (!data) return;
 
-            const { token, name } = data
-            this.token = token;
-            this.name = name;
+            this.authState = data;
         },
         async login(loginForm) {
             const data = await fetchApi('/login', {
                 method: 'POST',
                 body: loginForm,
+            });
+
+            if (!data.error) {
+                this.updateState(data);
+                setToken(data.token);
+            }
+
+            return data
+        },
+        async registration(registrationForm) {
+            const data = await fetchApi('/registration', {
+                method: 'POST',
+                body: registrationForm,
             });
 
             if (!data.error) {
@@ -42,16 +61,15 @@ export const useAuthStore = defineStore('auth-store', {
 
             removeToken()
 
-            this.name = null
-            this.token = null
+            this.authState = basicState
         }
     },
     getters: {
-        isAuth(state): boolean {
-            return !!state.token;
+        isAuth({ authState }): boolean {
+            return !!authState.token;
         },
-        userName(state): string | null {
-            return state.name
+        userName({ authState }): string | null {
+            return `${authState.name} ${authState.surname}`
         }
     },
 });

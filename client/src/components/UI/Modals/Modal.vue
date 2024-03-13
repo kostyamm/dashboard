@@ -26,7 +26,7 @@ onUnmounted(() => document.removeEventListener('keydown', keydownListener));
 </script>
 
 <template>
-    <Transition name="modal-fade">
+    <Transition name="fade">
         <div
             v-if="modalState?.component"
             @click.self="onCloseModal"
@@ -93,15 +93,5 @@ onUnmounted(() => document.removeEventListener('keydown', keydownListener));
         max-height: 800px;
         overflow-y: auto;
     }
-}
-
-.modal-fade-enter-from,
-.modal-fade-leave-to {
-    opacity: 0;
-}
-
-.modal-fade-enter-active,
-.modal-fade-leave-active {
-    transition: 0.25s ease all;
 }
 </style>

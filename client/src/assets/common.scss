@@ -22,5 +22,10 @@ h1 {
         justify-content: flex-end;
         gap: 16px;
         margin-top: 16px;
+
+        &__link {
+            cursor: pointer;
+            color: var(--primary-color);
+        }
     }
 }

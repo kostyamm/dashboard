@@ -11,6 +11,10 @@ const basicState: ModalProps = { component: null, options: {} };
 export const useModalStore = defineStore('modal-store', {
     state: (): ModalState => ({ modalState: basicState }),
     actions: {
+        updateModalTitle(title: string) {
+            this.modalState.options.title = title
+        },
+
         openModal({ component, options }: ModalProps) {
             const body = document.body;
             if (body) body.style.overflow = 'hidden';

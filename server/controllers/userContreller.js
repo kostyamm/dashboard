@@ -13,7 +13,7 @@ const registration = async (req, res, next) => {
     const { name, surname, email , password } = req.body
 
     if (!name || !surname || !email || !password) {
-        return next(ApiError.badRequest('All fields are required'))
+        return next(ApiError.badRequest('Fill in required fields'))
     }
 
     const candidate = await User.findOne({ email })

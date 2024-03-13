@@ -17,8 +17,12 @@ const authStore = useAuthStore();
 
         <div v-if="authStore.isAuth" class="header__menu">
             <div class="header__menu__user">
-                <Icon name="CircleUserRound" />
-                {{ authStore.userName }}
+                <Icon name="CircleUserRound" size="28" :stroke-width="1.2" />
+
+                <div class="header__menu__user__data">
+                    <strong>{{ authStore.authState.email }}</strong>
+                    <span>{{ authStore.userName }}</span>
+                </div>
             </div>
             <button @click="authStore.logout" class="outline">
                 <Icon name="LogOut" />
@@ -38,14 +42,31 @@ const authStore = useAuthStore();
     &__menu {
         display: flex;
         align-items: center;
-        gap: 24px;
+        gap: 32px;
 
         &__user {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
+
+            &__data {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+
+                strong {
+                    font-size: 14px;
+                    line-height: 14px;
+                }
+
+                span {
+                    font-size: 12px;
+                    line-height: 12px;
+                }
+            }
 
             .icon {
-                padding-right: 8px;
+                padding-right: 6px;
+                color: var(--primary-color);
             }
         }
     }
