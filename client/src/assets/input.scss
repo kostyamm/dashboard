@@ -11,12 +11,6 @@
     transition: all ease-in-out 200ms;
 }
 
-label {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-
 input, textarea {
     @extend .base-input;
 

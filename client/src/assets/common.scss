@@ -4,16 +4,37 @@ h1 {
     margin-top: 0;
 }
 
+
 .form {
     display: flex;
     justify-content: center;
     flex-direction: column;
     gap: 16px;
 
+    label {
+        font-size: 16px;
+        margin-bottom: 4px;
+
+        &.required:before {
+            color: var(--warning--color);
+            content: '* '
+        }
+    }
+
     &__field {
         display: flex;
         justify-content: center;
         flex-direction: column;
+
+        &__error {
+            color: var(--warning--color);
+            padding-top: 4px;
+            font-size: 14px;
+
+            &:first-letter {
+                text-transform: capitalize;
+            }
+        }
     }
 
     &__footer {

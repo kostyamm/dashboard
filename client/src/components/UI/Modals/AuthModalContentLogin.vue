@@ -1,17 +1,27 @@
 <script setup lang="ts">
-import { reactive, toRaw } from 'vue';
+import { reactive } from 'vue';
 import { useModalStore } from '../../../stores/useModalStore';
 import { useAuthStore } from '../../../stores/useAuthStore.ts';
+import { useYupValidate } from '../../../hooks/useYupValidate.ts';
+import { loginSchema, LoginSchema } from '../../../api/schemes/loginSchema.ts';
 
 defineProps<{ goToRegistrationForm: () => void }>()
 
 const modalStore = useModalStore();
 const authStore = useAuthStore();
 
-const form = reactive({ email: null, password: null });
+const loginForm = reactive({ email: null, password: null });
+
+const { validateForm, errors, isValid } = useYupValidate<LoginSchema>(loginSchema, loginForm)
 
 const onSubmit = async () => {
-    const data = await authStore.login(toRaw(form));
+    await validateForm()
+
+    if (!isValid.value) {
+        return
+    }
+
+    const data = await authStore.login(loginForm);
 
     if (data.error) {
         return;
@@ -24,13 +34,15 @@ const onSubmit = async () => {
 <template>
     <form @submit.prevent="onSubmit" class="form">
         <div class="form__field">
-            <label for="email">Email</label>
-            <input v-model="form.email" id="email" />
+            <label for="email" class="required">Email</label>
+            <input v-model="loginForm.email" id="email" />
+            <span class="form__field__error">{{ errors.email }}</span>
         </div>
 
         <div class="form__field">
-            <label for="password">Password</label>
-            <input v-model="form.password" id="password" type="password" />
+            <label for="password" class="required">Password</label>
+            <input v-model="loginForm.password" id="password" type="password" />
+            <span class="form__field__error">{{ errors.password }}</span>
         </div>
 
         <div class="form__footer">
