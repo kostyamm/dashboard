@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useNotificationStore } from '../../stores/useNotificationStore.ts';
+import { useNotificationStore } from '../../../stores/useNotificationStore.ts';
 import { storeToRefs } from 'pinia';
 import NotificationItem from './NotificationItem.vue';
 

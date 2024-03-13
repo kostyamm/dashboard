@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { NotificationProps } from '../../stores/useNotificationStore.types.ts';
+import { NotificationProps } from '../../../stores/useNotificationStore.types.ts';
 import { onMounted } from 'vue';
-import { NOTIFICATION_REMOVE_TIMEOUT, useNotificationStore } from '../../stores/useNotificationStore.ts';
-import Icon from './Icon.vue';
+import { NOTIFICATION_REMOVE_TIMEOUT, useNotificationStore } from '../../../stores/useNotificationStore.ts';
+import Icon from '../Icon.vue';
 
 const props = defineProps<{ item: NotificationProps }>();
 const notificationStore = useNotificationStore();

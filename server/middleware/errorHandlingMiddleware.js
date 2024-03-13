@@ -1,7 +1,7 @@
-const apiError = require('../helpers/apiError')
+const ApiError = require('../helpers/ApiError')
 
 module.exports = (error, req, res, next) => {
-    if (error instanceof apiError) {
+    if (error instanceof ApiError) {
         return res.status(error.status).json({ error })
     }
 

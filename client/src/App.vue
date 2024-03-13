@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Modal from './components/UI/Modals/Modal.vue';
-import Notification from './components/UI/Notification.vue';
+import Notification from './components/UI/Notification/Notification.vue';
 
 import Dashboard from './components/Dashboard.vue';
 

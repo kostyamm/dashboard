@@ -1,5 +1,5 @@
 const Board = require('../models/Board')
-const apiError = require('../helpers/apiError')
+const ApiError = require('../helpers/ApiError')
 const { TaskStatus } = require('../helpers/constants')
 
 const createTask = async (req, res, next) => {
@@ -14,7 +14,7 @@ const createTask = async (req, res, next) => {
 
         res.json(response)
     } catch {
-        return next(apiError.badRequest('Form validation error'))
+        return next(ApiError.badRequest('Form validation error'))
     }
 }
 
@@ -24,7 +24,7 @@ const updateTask = async ({ params, body }, res, next) => {
 
         res.json(response)
     } catch {
-        return next(apiError.badRequest('Form validation error'))
+        return next(ApiError.badRequest('Form validation error'))
     }
 }
 
@@ -32,7 +32,7 @@ const deleteTask = async ({ params, user }, res, next) => {
     const task = await Board.findById(params.id)
 
     if (task.owner.toString() !== user.id) {
-        return next(apiError.badRequest('You cannot delete someone else\'s task'))
+        return next(ApiError.badRequest('You cannot delete someone else\'s task'))
     }
 
     try {
@@ -40,7 +40,7 @@ const deleteTask = async ({ params, user }, res, next) => {
 
         res.json(response)
     } catch {
-        return next(apiError.badRequest('Some problems with deleting a task'))
+        return next(ApiError.badRequest('Some problems with deleting a task'))
     }
 }
 

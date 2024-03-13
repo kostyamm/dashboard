@@ -1,6 +1,6 @@
 const Board = require('../models/Board')
 const { TaskStatus } = require('../helpers/constants')
-const apiError = require('../helpers/apiError')
+const ApiError = require('../helpers/ApiError')
 
 const getBoard = async ({ user }, res, next) => {
     try {
@@ -8,7 +8,7 @@ const getBoard = async ({ user }, res, next) => {
 
         res.json(groupBoard(board))
     } catch {
-        return next(apiError.badRequest('Some problems getting the board'))
+        return next(ApiError.badRequest('Some problems getting the board'))
     }
 }
 
