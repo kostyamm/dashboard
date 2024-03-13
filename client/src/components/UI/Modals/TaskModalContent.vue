@@ -42,30 +42,30 @@ const onSubmit = async () => {
 <template>
     <div class="form">
         <div class="form__field">
-            <label for="title">Title</label>
+            <label for="title" class="required">Title</label>
             <input v-model="taskForm.title" id="title">
             <span class="form__field__error">{{ errors.title }}</span>
         </div>
 
         <div class="form__field">
-            <label for="description">Description</label>
+            <label for="description" class="required">Description</label>
             <textarea v-model="taskForm.description" id="description" rows="4" />
             <span class="form__field__error">{{ errors.description }}</span>
         </div>
 
         <div class="form__field">
-            <label for="priority">Priority</label>
+            <label for="priority" class="required">Priority</label>
             <select v-model="taskForm.priority" id="priority" name="priority">
                 <option disabled value="">Please select one</option>
                 <option>{{ Priority.Low }}</option>
                 <option>{{ Priority.Medium }}</option>
-                <option>{{ Priority.Hight }}</option>
+                <option>{{ Priority.High }}</option>
             </select>
             <span class="form__field__error">{{ errors.priority }}</span>
         </div>
 
         <div class="form__field">
-            <label for="due_date">Due date</label>
+            <label for="due_date" class="required">Due date</label>
             <input v-model="taskForm.due_date" type="date" id="due_date" />
             <span class="form__field__error">{{ errors.due_date }}</span>
         </div>

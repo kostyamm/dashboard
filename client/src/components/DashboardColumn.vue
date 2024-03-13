@@ -81,11 +81,11 @@ const statusMap = {
     flex-direction: column;
     gap: 16px;
 
-    padding: 24px 12px;
-    min-height: 90px;
+    padding: 20px 12px;
+    min-height: 97px;
 
     border-radius: var(--border-radius);
-    background-color: var(--dark-color--lighter);
+    background-color: var(--card--bg);
 
     &:has(.dashboard-column__item--ghost):before {
         position: absolute;
@@ -103,7 +103,6 @@ const statusMap = {
         align-items: center;
         justify-content: center;
 
-        margin: 12px 6px;
         background-color: rgba(65, 184, 131, 0.6);
         border-radius: var(--border-radius);
     }

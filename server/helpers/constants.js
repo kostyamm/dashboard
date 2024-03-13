@@ -8,7 +8,7 @@ const TaskStatus = {
 const Priority = {
     Low: 'low',
     Medium: 'medium',
-    Hight: 'hight'
+    High: 'high'
 }
 
 module.exports = { TaskStatus, Priority }

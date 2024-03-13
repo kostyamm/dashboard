@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import Icon from './UI/Icon.vue';
-import { Task } from '../api/types.ts';
+import { Priority, Task } from '../api/types.ts';
 import { useModalStore } from '../stores/useModalStore.ts';
 import { computed } from 'vue';
 import { useBoardStore } from '../stores/useBoardStore.ts';
+import Tag from './UI/Tag.vue';
+import { TagVariant } from './types.ts';
 
 type ItemProps = {
     item: Task
@@ -13,6 +15,33 @@ const item = computed(() => props.item);
 
 const modalStore = useModalStore();
 const boardStore = useBoardStore();
+
+const calculateDeadline = (targetDate: string, deadline: number) => {
+    let currentDate = new Date();
+    let targetDateObj = new Date(targetDate);
+
+    let timeDiff = targetDateObj.getTime() - currentDate.getTime();
+    let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+    return diffDays <= deadline;
+}
+const isDeadline = computed(() => calculateDeadline(props.item.due_date, 1))
+
+const priorityMap = {
+    [Priority.Low]: {
+        variant: TagVariant.White,
+        label: 'Low'
+    },
+    [Priority.Medium]: {
+        variant: TagVariant.Orange,
+        label: 'Medium'
+    },
+    [Priority.High]: {
+        variant: TagVariant.Warning,
+        label: 'High'
+    }
+}
+const priority = computed(() => priorityMap[props.item.priority])
 </script>
 
 <template>
@@ -31,8 +60,11 @@ const boardStore = useBoardStore();
         </div>
 
         <div class="item__common-info">
-            <div>Priority: {{ item.priority }}</div>
-            <div>Due date: {{ item.due_date }}</div>
+            <Tag :label="priority.label" :variant="priority.variant" />
+            <div :class="isDeadline && 'item__common-info__date-warning'">
+                <Icon v-if="isDeadline" name="AlertTriangle" size="16"/>
+                <div>{{ item.due_date }}</div>
+            </div>
         </div>
     </div>
 </template>
@@ -46,7 +78,7 @@ const boardStore = useBoardStore();
 
 .item {
     padding: 12px;
-    background-color: var(--grey-color);
+    background-color: var(--sub-card--bg);
     border-radius: var(--border-radius);
     cursor: pointer;
     border: 1px solid transparent;
@@ -57,12 +89,18 @@ const boardStore = useBoardStore();
         align-items: center;
         justify-content: space-between;
         gap: 4px;
-        padding-bottom: 8px;
+        padding-bottom: 12px;
+        margin-bottom: 12px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 
+
         & span {
-            font-weight: 600;
+            font-weight: 500;
+
+            white-space: nowrap;
             width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
 
@@ -70,20 +108,23 @@ const boardStore = useBoardStore();
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding-top: 12px;
         font-size: 12px;
         line-height: 1;
         text-transform: capitalize;
+
+        &__date-warning {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: var(--warning--color);
+        }
     }
 
     &__edit,
     &__delete {
         border: none;
-        padding: 4px;
-
-        &:hover {
-            opacity: 0.8;
-        }
+        padding: 6px 8px;
+        margin-left: 6px;
     }
 
     &__edit {
@@ -92,10 +133,7 @@ const boardStore = useBoardStore();
 
     &__delete {
         color: var(--warning--color);
-    }
-
-    &:hover {
-        opacity: 0.8;
+        background-color: var(--warning-opacity--color);
     }
 }
 </style>

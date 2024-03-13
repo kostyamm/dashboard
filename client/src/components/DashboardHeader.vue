@@ -46,16 +46,16 @@ const authStore = useAuthStore();
 
         &__user {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
 
             &__data {
                 display: flex;
                 flex-direction: column;
-                gap: 2px;
+                gap: 4px;
 
                 strong {
-                    font-size: 14px;
-                    line-height: 14px;
+                    font-size: 16px;
+                    line-height: 16px;
                 }
 
                 span {

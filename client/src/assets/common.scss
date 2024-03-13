@@ -9,15 +9,16 @@ h1 {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    gap: 16px;
+    gap: 20px;
 
     label {
         font-size: 16px;
-        margin-bottom: 4px;
+        margin-bottom: 6px;
 
         &.required:before {
+            content: '*';
+            padding-right: 2px;
             color: var(--warning--color);
-            content: '* '
         }
     }
 
