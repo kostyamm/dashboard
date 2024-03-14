@@ -5,6 +5,12 @@ const { TaskStatus } = require('../helpers/constants')
 const createTask = async (req, res, next) => {
     const { id: owner } = req.user
 
+    const amountTasks = await Board.where({ owner, status: TaskStatus.ToDo }).countDocuments()
+
+    if (amountTasks >= 5) {
+        return next(ApiError.badRequest('You can not create more than 5 tasks for to_do status'))
+    }
+
     try {
         const response = await Board.create({
             ...req.body,

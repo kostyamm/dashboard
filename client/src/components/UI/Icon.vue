@@ -13,8 +13,9 @@ import Plus from 'lucide-vue-next/dist/esm/icons/plus.js'
 import LogOut from 'lucide-vue-next/dist/esm/icons/log-out.js'
 import CircleUserRound from 'lucide-vue-next/dist/esm/icons/circle-user-round.js'
 import AlertTriangle from 'lucide-vue-next/dist/esm/icons/alert-triangle.js'
+import Copy from 'lucide-vue-next/dist/esm/icons/copy.js'
 
-const icons = { Pencil, GripVertical, X, Trash2, Plus, LogOut, CircleUserRound, AlertTriangle }
+const icons = { Pencil, GripVertical, X, Trash2, Plus, LogOut, CircleUserRound, AlertTriangle, Copy }
 
 const props = defineProps({
     name: {

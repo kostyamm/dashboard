@@ -1,16 +1,13 @@
 <script setup lang="ts">
 import Icon from './UI/Icon.vue';
-import { Priority, Task } from '../api/types.ts';
+import { Priority, Task, TaskStatus } from '../api/types.ts';
 import { useModalStore } from '../stores/useModalStore.ts';
 import { computed } from 'vue';
 import { useBoardStore } from '../stores/useBoardStore.ts';
 import Tag from './UI/Tag.vue';
 import { TagVariant } from './types.ts';
 
-type ItemProps = {
-    item: Task
-}
-const props = defineProps<ItemProps>();
+const props = defineProps<{ item: Task }>();
 const item = computed(() => props.item);
 
 const modalStore = useModalStore();
@@ -25,7 +22,6 @@ const calculateDeadline = (targetDate: string, deadline: number) => {
 
     return diffDays <= deadline;
 };
-const isDeadline = computed(() => calculateDeadline(props.item.due_date, 1));
 
 const priorityMap = {
     [Priority.Low]: {
@@ -41,6 +37,9 @@ const priorityMap = {
         label: 'High',
     },
 };
+
+const isDeadline = computed(() => calculateDeadline(props.item.due_date, 1));
+const canShowActions = computed(() => item.value.status !== TaskStatus.Cancelled);
 const priority = computed(() => priorityMap[props.item.priority]);
 </script>
 
@@ -51,12 +50,14 @@ const priority = computed(() => priorityMap[props.item.priority]);
             <span>
                 {{ item.title }}
             </span>
-            <button @click="modalStore.openTaskModal(item)" class="outline item__edit">
-                <Icon name="Pencil" size="18" />
-            </button>
-            <button @click="boardStore.deleteTask(item.id)" class="outline item__delete">
-                <Icon name="Trash2" size="18" />
-            </button>
+            <template v-if="canShowActions">
+                <button @click="modalStore.openTaskModal(item)" class="outline item__edit">
+                    <Icon name="Pencil" size="18" />
+                </button>
+                <button @click="boardStore.deleteTask(item.id)" class="outline item__delete">
+                    <Icon name="Trash2" size="18" />
+                </button>
+            </template>
         </div>
 
         <div class="item__common-info">

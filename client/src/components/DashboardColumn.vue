@@ -59,7 +59,7 @@ const statusMap = {
 
 <template>
     <div class="dashboard-container">
-        <h1>{{ statusMap[props.status] }}</h1>
+        <h2>{{ statusMap[props.status] }}</h2>
 
         <div
             @drop.prevent="onDrop"

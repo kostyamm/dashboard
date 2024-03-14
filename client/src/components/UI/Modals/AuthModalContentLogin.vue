@@ -41,7 +41,7 @@ const onSubmit = async () => {
 
         <div class="form__field">
             <label for="password" class="required">Password</label>
-            <input v-model="loginForm.password" id="password" type="password" />
+            <input v-model="loginForm.password" id="password" />
             <span class="form__field__error">{{ errors.password }}</span>
         </div>
 

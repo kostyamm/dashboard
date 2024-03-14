@@ -31,10 +31,6 @@ onMounted(() => boardStore.fetchBoard());
 </template>
 
 <style lang="scss" scoped>
-.container {
-    padding: 24px 0;
-}
-
 .dashboard {
     display: flex;
     flex-wrap: wrap;

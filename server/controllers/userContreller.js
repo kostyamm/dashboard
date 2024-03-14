@@ -4,9 +4,9 @@ const ApiError = require('../helpers/ApiError')
 const User = require('../models/User')
 
 const generateJwt = (payload) => {
-    const options = { expiresIn: '24h' }
+    // const options = { expiresIn: '24h' }
 
-    return jwt.sign(payload, process.env.SECRET_KEY, options)
+    return jwt.sign(payload, process.env.SECRET_KEY)
 };
 
 const registration = async (req, res, next) => {

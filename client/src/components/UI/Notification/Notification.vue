@@ -25,8 +25,8 @@ const { notificationState } = storeToRefs(notificationStore);
 <style scoped lang="scss">
 .notifications {
     position: fixed;
-    right: 16px;
-    top: 16px;
+    right: 24px;
+    top: 20px;
     z-index: 999;
 
     width: 100%;

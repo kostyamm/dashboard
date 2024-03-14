@@ -1,5 +1,6 @@
 import { getToken } from '../stores/useAuthStore.ts';
 import { useNotificationStore } from '../stores/useNotificationStore.ts';
+import { NotificationType } from '../stores/useNotificationStore.types.ts';
 
 export const fetchApi = async (path: string, options?: Omit<RequestInit, 'body'> & { body?: any }) => {
     const notificationStore = useNotificationStore()
@@ -23,6 +24,7 @@ export const fetchApi = async (path: string, options?: Omit<RequestInit, 'body'>
             const { message, status, statusText } = response.error
 
             notificationStore.openNotification({
+                type: NotificationType.Error,
                 title: statusText || 'Api Error',
                 status,
                 message,
