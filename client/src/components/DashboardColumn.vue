@@ -1,42 +1,52 @@
 <script setup lang="ts">
-import Draggable from 'vuedraggable';
 import { computed, ref } from 'vue';
 import { Task, TaskStatus } from '../api/types.ts';
-import DashboardColumnItem from './DashboardColumnItem.vue';
 import { useBoardStore } from '../stores/useBoardStore.ts';
+import DashboardColumnItem from './DashboardColumnItem.vue';
+
+const boardStore = useBoardStore();
 
 const props = defineProps<{ list: Array<Task>; status: Task['status']; group?: string }>();
+
 const sortedList = computed(() => props.list.sort((a, b) => {
     const difference = new Date(a.updatedAt).valueOf() - new Date(b.updatedAt).valueOf();
 
     return difference < 0 ? 1 : -1;
 }));
 
-const listRef = ref(sortedList);
+const activeColumn = ref(false)
+const toggleActive = () => activeColumn.value = !activeColumn.value
 
-const boardStore = useBoardStore();
+const onDragStart = (event: DragEvent, item: Task, index: number) => {
+    const dataTransfer = event.dataTransfer;
+    if (!dataTransfer) return;
 
-const onChangeStatus = (data: { element: any, newIndex: number, oldIndex: number }) => {
-    const { element } = data;
+    dataTransfer.dropEffect = 'move';
+    const data = {
+        item,
+        index,
+        oldStatus: props.status,
+    };
 
-    boardStore.updateTask({
-        id: element.id,
-        status: props.status,
-    });
+    dataTransfer.setData('text/plain', JSON.stringify(data));
 };
 
-const onChange = (event: any) => {
-    if (event.hasOwnProperty('added')) {
-        onChangeStatus(event.added);
+const onDrop = (event: DragEvent) => {
+    toggleActive()
+
+    const dataTransfer = event.dataTransfer;
+    if (!dataTransfer) return;
+
+    const { item, oldStatus } = JSON.parse(dataTransfer.getData('text/plain'));
+
+    if (props.status === oldStatus) {
+        return;
     }
 
-    // if (event.hasOwnProperty('removed')) {
-    //     console.log(`removed from ${props.status}`, event.removed);
-    // }
-    //
-    // if (event.hasOwnProperty('moved')) {
-    //     console.log(`moved to ${props.status}`, event.moved);
-    // }
+    boardStore.updateTaskStatus({
+        id: item.id,
+        status: props.status,
+    }, oldStatus);
 };
 
 const statusMap = {
@@ -51,20 +61,25 @@ const statusMap = {
     <div class="dashboard-container">
         <h1>{{ statusMap[props.status] }}</h1>
 
-        <Draggable
-            :list="listRef"
-            :group="props.group || 'dashboard'"
-            @change="onChange"
-            item-key="id"
-            animation="100"
+        <div
+            @drop.prevent="onDrop"
+            @dragenter.prevent="toggleActive"
+            @dragleave.prevent="toggleActive"
+            @dragover.prevent
             class="dashboard-column"
-            ghostClass="dashboard-column__item--ghost"
-            dragClass="dashboard-column__item--drag"
+            :class="{ 'dashboard-column--active': activeColumn }"
         >
-            <template #item="{element}" class="dashboard-column">
-                <DashboardColumnItem :item="element" />
-            </template>
-        </Draggable>
+            <TransitionGroup name="list-vertical">
+                <div
+                    v-for="(item, index) in sortedList"
+                    :key="item.id"
+                    draggable="true"
+                    @dragstart="onDragStart($event, item, index)"
+                >
+                    <DashboardColumnItem :item="item" />
+                </div>
+            </TransitionGroup>
+        </div>
     </div>
 </template>
 
@@ -81,13 +96,13 @@ const statusMap = {
     flex-direction: column;
     gap: 16px;
 
-    padding: 20px 12px;
-    min-height: 97px;
+    padding: 16px;
+    min-height: 103px;
 
     border-radius: var(--border-radius);
     background-color: var(--card--bg);
 
-    &:has(.dashboard-column__item--ghost):before {
+    &--active:before {
         position: absolute;
         top: 0;
         bottom: 0;
@@ -105,18 +120,6 @@ const statusMap = {
 
         background-color: rgba(65, 184, 131, 0.6);
         border-radius: var(--border-radius);
-    }
-
-    &__item--drag {
-        opacity: 0.4;
-        border: 1px dashed var(--white-color);
-    }
-
-    &__item--ghost {
-        display: none;
-        //background-color: var(--dark-color--lighter);
-        //outline: 1px dashed var(--grey-color);
-        //border-radius: var(--border-radius);
     }
 }
 </style>

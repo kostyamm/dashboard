@@ -12,7 +12,7 @@ const generateJwt = (payload) => {
 const registration = async (req, res, next) => {
     const { name, surname, email , password } = req.body
 
-    if (!name || !surname || !email || !password) {
+    if (!name || !email || !password) {
         return next(ApiError.badRequest('Fill in required fields'))
     }
 

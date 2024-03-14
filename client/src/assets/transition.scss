@@ -20,6 +20,19 @@
     transform: translateX(30px);
 }
 
+.list-vertical-move, /* apply transition to moving elements */
+.list-vertical-enter-active,
+.list-vertical-leave-active {
+    transition: all 0.3s ease;
+}
+
+.list-vertical-enter-from,
+.list-vertical-leave-to {
+    transition: all 0.5s ease;
+    opacity: 0;
+    transform: translateY(-30px);
+}
+
 .form-move, /* apply transition to moving elements */
 .form-enter-active,
 .form-leave-active {

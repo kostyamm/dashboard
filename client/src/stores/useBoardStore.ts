@@ -36,11 +36,24 @@ export const useBoardStore = defineStore('board-store', {
 
             if (!data.error) {
                 this.boards[data.status] = this.boards[data.status]
-                    .map((task) => {
+                    .map((task: Task) => {
                         if (task.id === data.id) return data;
 
                         return task;
                     });
+            }
+
+            return data
+        },
+        async updateTaskStatus(task: Pick<Task, 'id' | 'status'>, oldStatus: Task['status']) {
+            const data = await fetchApi(`/board/task/${task.id}`, {
+                method: 'PUT',
+                body: task,
+            });
+
+            if (!data.error) {
+                this.boards[oldStatus] = this.boards[oldStatus].filter((item: Task) => item.id !== data.id)
+                this.boards[data.status].unshift(data)
             }
 
             return data

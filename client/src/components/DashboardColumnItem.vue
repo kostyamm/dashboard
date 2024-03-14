@@ -24,24 +24,24 @@ const calculateDeadline = (targetDate: string, deadline: number) => {
     let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
     return diffDays <= deadline;
-}
-const isDeadline = computed(() => calculateDeadline(props.item.due_date, 1))
+};
+const isDeadline = computed(() => calculateDeadline(props.item.due_date, 1));
 
 const priorityMap = {
     [Priority.Low]: {
         variant: TagVariant.White,
-        label: 'Low'
+        label: 'Low',
     },
     [Priority.Medium]: {
         variant: TagVariant.Orange,
-        label: 'Medium'
+        label: 'Medium',
     },
     [Priority.High]: {
         variant: TagVariant.Warning,
-        label: 'High'
-    }
-}
-const priority = computed(() => priorityMap[props.item.priority])
+        label: 'High',
+    },
+};
+const priority = computed(() => priorityMap[props.item.priority]);
 </script>
 
 <template>
@@ -60,10 +60,12 @@ const priority = computed(() => priorityMap[props.item.priority])
         </div>
 
         <div class="item__common-info">
-            <Tag :label="priority.label" :variant="priority.variant" />
+            <Tag v-if="priority" :label="priority.label" :variant="priority.variant" />
+            <div v-else>{{ props.item.priority }}</div>
+
             <div :class="isDeadline && 'item__common-info__date-warning'">
-                <Icon v-if="isDeadline" name="AlertTriangle" size="16"/>
-                <div>{{ item.due_date }}</div>
+                <Icon v-if="isDeadline" name="AlertTriangle" size="16" color="var(--warning--color)" />
+                <span>{{ item.due_date }}</span>
             </div>
         </div>
     </div>
@@ -89,13 +91,13 @@ const priority = computed(() => priorityMap[props.item.priority])
         align-items: center;
         justify-content: space-between;
         gap: 4px;
-        padding-bottom: 12px;
+        padding-bottom: 8px;
         margin-bottom: 12px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 
-
         & span {
             font-weight: 500;
+            margin-right: 12px;
 
             white-space: nowrap;
             width: 100%;
@@ -108,32 +110,42 @@ const priority = computed(() => priorityMap[props.item.priority])
         display: flex;
         align-items: center;
         justify-content: space-between;
-        font-size: 12px;
+        font-size: 14px;
         line-height: 1;
         text-transform: capitalize;
+
+        & span {
+            opacity: 0.8;
+        }
 
         &__date-warning {
             display: flex;
             align-items: center;
-            font-size: 14px;
-            color: var(--warning--color);
+
+            & .icon {
+                color: var(--warning--color);
+            }
         }
     }
 
     &__edit,
     &__delete {
-        border: none;
-        padding: 6px 8px;
-        margin-left: 6px;
+        border-color: transparent;
+        background-color: transparent;
+        padding: 4px;
+        opacity: 0.8;
+
+        &:hover {
+            opacity: 1;
+        }
     }
 
-    &__edit {
+    &__edit:hover {
         color: var(--primary-color);
     }
 
-    &__delete {
+    &__delete:hover {
         color: var(--warning--color);
-        background-color: var(--warning-opacity--color);
     }
 }
 </style>
