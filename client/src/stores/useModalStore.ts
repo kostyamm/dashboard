@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia';
 import { shallowRef } from 'vue';
 
-import TaskModalContent from '../components/UI/Modals/TaskModalContent.vue';
 import { ModalProps, ModalState } from './useModalStore.types.ts';
 import { Task } from '../api/types.ts';
+import TaskModalContent from '../components/UI/Modals/TaskModalContent.vue';
 import AuthModalContent from '../components/UI/Modals/AuthModalContent.vue';
+import ApiModalContent from '../components/UI/Modals/ApiModalContent.vue';
 
 const basicState: ModalProps = { component: null, options: {} };
 
@@ -36,6 +37,12 @@ export const useModalStore = defineStore('modal-store', {
             }
 
             this.openModal({ component: shallowRef(TaskModalContent), options});
+        },
+
+        openApiModal() {
+            const options: ModalProps['options'] = { title: 'API Data' }
+
+            this.openModal({ component: shallowRef(ApiModalContent), options});
         },
 
         openAuthModal() {

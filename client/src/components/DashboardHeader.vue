@@ -3,19 +3,9 @@ import Icon from './UI/Icon.vue';
 
 import { useModalStore } from '../stores/useModalStore.ts';
 import { useAuthStore } from '../stores/useAuthStore.ts';
-import { useNotificationStore } from '../stores/useNotificationStore.ts';
 
 const modalStore = useModalStore();
 const authStore = useAuthStore();
-const notificationStore = useNotificationStore();
-
-const onCopy = () => {
-    const token = authStore.authState.token || ''
-
-    navigator.clipboard.writeText(token);
-
-    notificationStore.openNotification({ message: 'Token has been copied' })
-}
 </script>
 
 <template>
@@ -34,9 +24,9 @@ const onCopy = () => {
                     <span>{{ authStore.userName }}</span>
                 </div>
             </div>
-            <button @click="onCopy" class="outline header__menu__token">
-                <Icon name="Copy" />
-                <span>Copy token {{ authStore.authState.token }}</span>
+            <button @click="modalStore.openApiModal" class="outline header__menu__token">
+                <Icon name="BookOpenText" />
+                API
             </button>
             <button @click="authStore.logout" class="outline">
                 <Icon name="LogOut" />

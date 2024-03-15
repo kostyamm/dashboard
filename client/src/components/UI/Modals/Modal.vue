@@ -87,6 +87,13 @@ onUnmounted(() => document.removeEventListener('keydown', keydownListener));
 
         font-size: 24px;
         font-weight: 600;
+
+        button {
+            color: var(--white-color);
+            border-color: var(--white-color);
+            background-color: transparent;
+            padding: 4px;
+        }
     }
 
     &__content {

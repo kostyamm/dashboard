@@ -13,14 +13,6 @@ button {
     opacity: 1;
     transition: all ease-in-out 0.25s;
 
-    span {
-        flex: 1;
-        white-space: nowrap;
-        max-width: 320px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
     &.warning {
         background-color: var(--warning--color);
     }
