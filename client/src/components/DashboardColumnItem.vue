@@ -102,8 +102,6 @@ const priority = computed(() => priorityMap[props.item.priority]);
 
             white-space: nowrap;
             width: 100%;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
     }
 
