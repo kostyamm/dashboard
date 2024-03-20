@@ -40,8 +40,19 @@ const getTask = async ({ params, body }, res, next) => {
 }
 
 const updateTask = async ({ params, body }, res, next) => {
+    const task = await Board.findById(params.id)
+
+    const isDueDateUpdated = body.due_date !== task.due_date
+    const isCancelled = body.status === TaskStatus.Cancelled
+
+    const updatedBody = {
+        ...body,
+        due_date_updated: isDueDateUpdated,
+        due_date: isCancelled ? '' : body.due_date
+    }
+
     try {
-        const response = await Board.findByIdAndUpdate(params.id, body, { new: true });
+        const response = await Board.findByIdAndUpdate(params.id, updatedBody, { new: true });
 
         res.json(response)
     } catch {

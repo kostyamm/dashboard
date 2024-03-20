@@ -8,6 +8,7 @@ const boardSchema = new Schema({
     status: { type: String, required: true },
     priority: { type: String },
     due_date: { type: String, required: true },
+    due_date_updated: { type: Boolean, default: false },
 }, baseOptions)
 
 const Board = model('board', boardSchema)

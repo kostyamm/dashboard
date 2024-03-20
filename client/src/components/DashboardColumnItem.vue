@@ -14,6 +14,10 @@ const modalStore = useModalStore();
 const boardStore = useBoardStore();
 
 const calculateDeadline = (targetDate: string, deadline: number) => {
+    if (!targetDate) {
+        return false
+    }
+
     let currentDate = new Date();
     let targetDateObj = new Date(targetDate);
 
@@ -38,7 +42,12 @@ const priorityMap = {
     },
 };
 
-const isDeadline = computed(() => calculateDeadline(props.item.due_date, 1));
+const isDeadline = computed(() => {
+    const { due_date, due_date_updated } = props.item
+    const showWarning = calculateDeadline(due_date, 1) || due_date_updated
+
+    return !!due_date && showWarning
+});
 const canShowActions = computed(() => item.value.status !== TaskStatus.Cancelled);
 const priority = computed(() => priorityMap[props.item.priority]);
 </script>
