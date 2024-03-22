@@ -97,7 +97,8 @@ onUnmounted(() => document.removeEventListener('keydown', keydownListener));
     }
 
     &__content {
-        max-height: 800px;
+        max-height: 600px;
+        height: 100%;
         overflow-y: auto;
     }
 }

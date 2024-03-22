@@ -63,7 +63,7 @@ const updateTask = async ({ params, body }, res, next) => {
 const deleteTask = async ({ params, user }, res, next) => {
     const task = await Board.findById(params.id)
 
-    if (task.owner.toString() !== user.id) {
+    if (task?.owner.toString() !== user?.id) {
         return next(ApiError.badRequest('You cannot delete someone else\'s task'))
     }
 

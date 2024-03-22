@@ -11,42 +11,41 @@ const curls = [
     {
         curlMethod: 'GET',
         curl: `
-curl --location --request GET 'http://localhost:8000/api/board/task/65f1836e7919ae36db5cd8cd' \\
-    --header 'authorization: YOUR_TOKEN'
+curl 'https://qa-board-back.onrender.com/api/board/task/65f308bdfed7fde5d5521ff2' \\
+  -H 'accept: application/json' \\
+  -H 'content-type: application/json' \\
+  -H 'authorization: YOUR_TOKEN'
 `
     },
     {
         curlMethod: 'POST',
         curl: `
-curl --location 'http://localhost:8000/api/board/task/' \\
-    --header 'Accept: application/json' \\
-    --header 'Content-Type: application/json' \\
-    --header 'authorization: YOUR_TOKEN' \\
-    --data '{
-        "title": "test_title",
-        "status": "to_do",
-        "priority": "medium",
-        "due_date": "2024-03-16"
-    }'
+curl 'https://qa-board-back.onrender.com/api/board/task' \\
+  -H 'accept: application/json' \\
+  -H 'content-type: application/json' \\
+  -H 'authorization: YOUR_TOKEN' \\
+  --data-raw '{"title":"12","description":"12","priority":"low","due_date":"2024-03-23"}'
 `
     },
     {
         curlMethod: 'PUT',
         curl: `
-curl --location --request PUT 'http://localhost:8000/api/board/task/65f407a66f4509d1baf4b30d' \\
-    --header 'Accept: application/json' \\
-    --header 'Content-Type: application/json' \\
-    --header 'authorization: YOUR_TOKEN' \\
-    --data '{
-        "title": "test_123"
-    }'
+curl 'https://qa-board-back.onrender.com/api/board/task/65fd47973d976deed7cb9cc0' \\
+  -X 'PUT' \\
+  -H 'accept: application/json' \\
+  -H 'content-type: application/json' \\
+  -H 'authorization: YOUR_TOKEN' \\
+  --data-raw '{"title":"1","description":"12","status":"to_do","priority":"low","due_date":"2024-03-23","id":"65fd47973d976deed7cb9cc0"}'
 `
     },
     {
         curlMethod: 'DELETE',
         curl: `
-curl --location --request DELETE 'http://localhost:8000/api/board/task/65f1836e7919ae36db5cd8cd' \\
-    --header 'authorization: YOUR_TOKEN'
+curl 'https://qa-board-back.onrender.com/api/board/task/65f308bdfed7fde5d5521ff2' \\
+  -X 'DELETE' \\
+  -H 'accept: application/json' \\
+  -H 'content-type: application/json' \\
+  -H 'authorization: YOUR_TOKEN'
 `
     }
 ]
@@ -85,7 +84,7 @@ const onCopy = () => {
     justify-content: center;
     flex-direction: column;
     gap: 12px;
-    padding-right: 24px;
+    padding: 24px 24px 24px 0;
 
     &__token {
         display: flex;

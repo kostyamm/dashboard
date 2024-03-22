@@ -33,7 +33,8 @@ const onCopy = () => {
 <style lang="scss" scoped>
 .curl-block {
     border-top: 1px solid var(--grey-color);
-    padding-top: 12px;
+    padding-top: 24px;
+    padding-bottom: 24px;
 
     pre {
         overflow-x: auto;
